@@ -15,7 +15,7 @@ class User {
         $this->passwordHash = $passwordHash;
     }
 
-    public static function select(mysqli $dbconn, string $email): Account {
+    public static function select(mysqli $dbconn, string $email): User {
         $query = $dbconn->prepare("SELECT * FROM user WHERE email = ?;");
         $query->bind_param("s", $email);
         $query->execute();
@@ -27,7 +27,7 @@ class User {
 
         $data = $rows->fetch_array();
 
-        return new Account($data['id'], $data['email'], $data['passwordHash ']);
+        return new User($data['id'], $data['email'], $data['passwordHash ']);
     }
 
     public function verifyPassword(string $password): bool {

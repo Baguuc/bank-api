@@ -1,4 +1,6 @@
 <?php
+
+namespace BankAPI;
 // załączamy zależności
 require_once("../lib/phprouter.php");
 use Steampixel\Route;

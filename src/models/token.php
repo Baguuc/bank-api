@@ -15,7 +15,7 @@ class Token {
         $this->token = $token;
     }
 
-    static function create(mysqli $db, string $ip, int $userID): Token {
+    public static function create(mysqli $db, string $ip, int $userID): Token {
         $timeCreated = time();
         // generacja token na podstawie:
         // + ip użytkownika
@@ -43,6 +43,18 @@ class Token {
         // zwrócenie więcej niż 0 wierszy
         // bedzie oznaczać, że taki token istnieje
         return $result->num_rows > 0;
+    }
+
+    public function getToken(): string {
+        return $this->token;
+    }
+
+    public function getUserId(): int {
+        return $this->userID;
+    }
+
+    public function getIP(): string {
+        return $this->ip;
     }
 }
 

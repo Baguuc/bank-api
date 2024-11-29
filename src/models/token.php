@@ -1,4 +1,8 @@
 <?php
+namespace BankAPI;
+
+// załączamy biblioteke mysql
+use msqli;
 
 class Token {
     private string $ip;

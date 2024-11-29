@@ -1,6 +1,8 @@
 <?php
-
 namespace BankAPI;
+
+// załączamy biblioteke mysql
+use msqli;
 
 class User {
     private int $id;

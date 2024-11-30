@@ -22,10 +22,13 @@ $dbconn->set_charset('utf8');
 const INDEX_ROUTE = new IndexPage();
 Route::add("/", function() { return INDEX_ROUTE->page(); });
 
-const LOGIN_ROUTE = new AccountDetailsPage($dbconn);
+const LOGIN_ROUTE = new LoginPage($dbconn);
 Route::add("/login", function() { return INDEX_ROUTE->page(); }, "post");
 
 const ACCOUNT_DETAILS_ROUTE = new AccountDetailsPage($dbconn);
 Route::add("/account/details", function() { return ACCOUNT_DETAILS_ROUTE->page(); }, "post");
+
+const TRANSFER_NEW_ROUTE = new TransferNewPage($dbconn);
+Route::add("/transfer/new", function() { return TRANSFER_NEW_ROUTE->page(); }, "post");
 
 Route::run("/bankAPI");

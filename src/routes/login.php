@@ -4,7 +4,7 @@ namespace BankAPI;
 // załączamy biblioteke mysql
 use msqli;
 
-class AccountDetailsPageResponse {
+class LoginPageResponse {
     private string|null $token;
     private string|null $error;
 
@@ -24,7 +24,7 @@ class AccountDetailsPageResponse {
     }
 }
 
-class AccountDetailsPage {
+class LoginPage {
     private mysqli $dbconn;
 
     public function __construct(mysqli $dbconn) {
@@ -42,7 +42,7 @@ class AccountDetailsPage {
             // Zmienna "login" w tym przypadku oznacza email uzytkownika
             $user = User::select($this->dbconn, $data['login']);
         } catch(Exception $_) {
-            $response = new AccountDetailsPageResponse(null, "This user does not exist.");
+            $response = new LoginPageResponse(null, "This user does not exist.");
             $response->send();
 
             return;
@@ -51,7 +51,7 @@ class AccountDetailsPage {
         $passwordOk = $user->verifyPassword($data['password']);
 
         if(!$passwordOk) {
-            $response = new AccountDetailsPageResponse(null, "Invalid password");
+            $response = new LoginPageResponse(null, "Invalid password");
             $response->send();
 
             return;
@@ -59,7 +59,7 @@ class AccountDetailsPage {
 
         $token = Token::create($this->dbconn, $ip, $user->getID());
         
-        $response = new AccountDetailsPageResponse($token->getToken(), null);
+        $response = new LoginPageResponse($token->getToken(), null);
         $response->send();
 
         return;

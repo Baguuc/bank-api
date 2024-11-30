@@ -27,7 +27,7 @@ class User {
 
         $data = $rows->fetch_array();
 
-        return new User($data['id'], $data['email'], $data['passwordHash ']);
+        return new User($data['id'], $data['email'], $data['passwordHash']);
     }
 
     public function verifyPassword(string $password): bool {

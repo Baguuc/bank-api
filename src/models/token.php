@@ -23,7 +23,7 @@ class Token {
         // + czas stworzenia
         $dataHashed = hash('sha256', $ip . $userID . $timeCreated);
 
-        $query = $db->prepare("INSERT INTO token (token, ip, userId) VALUES (?, ?, ?)");
+        $query = $db->prepare("INSERT INTO token (token, ip, user_id) VALUES (?, ?, ?)");
         $query->bind_param('ssi', $dataHashed, $ip, $userID);
 
         if(!$query->execute()) {

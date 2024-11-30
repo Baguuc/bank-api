@@ -14,12 +14,27 @@ class AccountDetailsPageResponse {
     }
 
     public function send() {
+        if($this->account) {
+            header("HTTP/1.1 200 OK");
+        } else if($this->error) {
+            header("HTTP/1.1 401 Unauthorized");
+        }
         header('Content-Type: application/json');
 
-        if($this->account) {
-            echo json_encode($this->account->asArray());
-        } else if($this->error) {
-            echo json_encode(['error' => $this->error]);
+        if($this->account && !$this->error) {
+            echo json_encode([
+                "accountNo" => $this->account->getAccountNo(),
+                "name" => $this->account->getName(),
+                "amount" => $this->account->getAmount(),
+                "error" => null
+            ]);
+        } else if(!$this->account && $this->error) {
+            echo json_encode([
+                "accountNo" => null,
+                "name" => null,
+                "amount" => null,
+                "error" => $this->error
+            ]);
         }
     }
 }
@@ -39,10 +54,8 @@ class AccountDetailsPage {
         $token = $data['token'];
 
         if(!Token::verify($this->dbconn, $token, $_SERVER['REMOTE_ADDR'])) {
-            // jeżeli token jest błędny zwracamy błąd
-            header('HTTP/1.1 401 Unauthorized');
-
-            $response = new AccountDetailsPageResponse(null, "Nieprawidłowy token");
+            // jezeli token jest bledny zwracamy error
+            $response = new AccountDetailsPageResponse(null, "Nieprawidlowy token");
             $response->send();
 
             return;

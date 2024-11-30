@@ -14,13 +14,18 @@ class LoginPageResponse {
     }
 
     public function send() {
+        if($this->token) {
+            header("HTTP/1.1 200 OK");
+        } else if($this->error) {
+            header("HTTP/1.1 400 Request error");
+        }
+
         header('Content-Type: application/json');
 
-        if($this->token) {
-            echo json_encode(['token' => $this->token]);
-        } else if($this->error) {
-            echo json_encode(['error' => $this->error]);
-        }
+        echo json_encode([
+            "token" => $this->token,
+            "error" => $this->error,
+        ]);
     }
 }
 

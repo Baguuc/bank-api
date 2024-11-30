@@ -12,12 +12,18 @@ class TransferNewPageResponse {
     }
 
     public function send() {
-        header('Content-Type: application/json');
-
         if($this->error) {
-            echo json_encode($this->error);
+            header("HTTP/1.1 401 Unauthorized");
+            header('Content-Type: application/json');
+            
+            echo json_encode([
+                "error" => $this->error
+            ]);
         } else {
-            echo json_encode(['status' => "OK"]);
+            header("HTTP/1.1 200 Unauthorized");
+            header('Content-Type: application/json');
+
+            echo json_encode([ "error" => null ]);
         }
     }
 }

@@ -12,6 +12,7 @@ require_once("../src/routes/models/token.php");
 // załączamy poszczegolne sciezki
 require_once("../src/routes/index.php");
 require_once("../src/routes/login.php");
+require_once("../src/routes/account/details.php");
 
 // polacz z baza danych i skonfiguruj polaczenie
 $dbconn = new \mysqli("localhost", "root", "", "bankAPI");
@@ -21,7 +22,10 @@ $dbconn->set_charset('utf8');
 const INDEX_ROUTE = new IndexPage();
 Route::add("/", function() { return INDEX_ROUTE->page(); });
 
-const LOGIN_ROUTE = new LoginPage($dbconn);
+const LOGIN_ROUTE = new AccountDetailsPage($dbconn);
 Route::add("/login", function() { return INDEX_ROUTE->page(); }, "post");
+
+const ACCOUNT_DETAILS_ROUTE = new AccountDetailsPage($dbconn);
+Route::add("/account/details", function() { return ACCOUNT_DETAILS_ROUTE->page(); }, "post");
 
 Route::run("/bankAPI");

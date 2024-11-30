@@ -5,15 +5,15 @@ namespace BankAPI;
 use msqli;
 
 class Account {
-    private int $id;
+    private int $accountNo;
     // wartość amount jest przechowywana w groszach
     // stąd typ zmiennej integer a nie float
     private int $amount;
     private string $name;
 
 
-    public function __construct(int $id, int $amount, string $name) {
-        $this->id = $id;
+    public function __construct(int $accountNo, int $amount, string $name) {
+        $this->accountNo = $accountNo;
         $this->amount = $amount;
         $this->name = $name;
     }
@@ -33,8 +33,23 @@ class Account {
         return new Account($data['accountNo'], $data['amount'], $data['name']);
     }
 
-    public function getID(): int {
-        return $this->id;
+    public static function selectByUserID(mysqli $dbconn, int $userID): Account {
+        $query = $dbconn->prepare("SELECT * FROM account WHERE user_id = ?;");
+        $query->bind_param("i", $userID);
+        $query->execute();
+        $rows = mysqli_stmt_get_result($query);
+
+        if($rows->num_rows == 0) {
+            throw new \Exception("User not found");
+        }
+
+        $data = $rows->fetch_array();
+
+        return new Account($data['accountNo'], $data['amount'], $data['name']);
+    }
+
+    public function getAccountNo(): int {
+        return $this->accountNo;
     }
 
     public function getAmount(): int {
@@ -47,7 +62,7 @@ class Account {
 
     public function asArray(): array {
         return [
-            "id" => $this->id,
+            "id" => $this->accountNo,
             "amount" => $this->amount,
             "name" => $this->name
         ];

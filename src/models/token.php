@@ -2,7 +2,7 @@
 namespace BankAPI;
 
 // załączamy biblioteke mysql
-use msqli;
+use mysqli;
 
 class Token {
     private string $ip;
@@ -27,16 +27,32 @@ class Token {
         $query->bind_param('ssi', $dataHashed, $ip, $userID);
 
         if(!$query->execute()) {
-            throw new Exception('Something went wrong during token creation');
+            throw new \Exception('Something went wrong during token creation');
         }
         
         return new Token($ip, $userID, $dataHashed);
+    }
+
+    static function searchUserId(mysqli $dbconn, string $token) : int {
+        // szukamy jedneid użytkownika przypisane do danego tokenu
+        $query = $dbconn->prepare("SELECT user_id FROM token WHERE token = ? LIMIT 1;");
+        $query->bind_param('s', $token);
+        $query->execute();
+
+        $result = $query->get_result();
+        //jeśli nie ma tokenu to wyrzuć wyjątek
+        if($result->num_rows == 0) {
+            throw new \Exception('Invalid token');
+        }
+        $row = $result->fetch_assoc();
+
+        return $row['user_id'];
     }
     
     public static function verify(mysqli $db, string $token, string $ip) : bool {
         $query = $db->prepare("SELECT * FROM token WHERE token = ? AND ip = ?");
         $query->bind_param('ss', $token, $ip);
-        $query->execute();  
+        $query->execute();
 
         $result = $query->get_result();
 

@@ -9,6 +9,7 @@ use Steampixel\Route;
 require_once("../src/models/account.php");
 require_once("../src/models/user.php");
 require_once("../src/models/token.php");
+require_once("../src/models/transfer.php");
 
 // załączamy poszczegolne sciezki
 require_once("../src/routes/index.php");

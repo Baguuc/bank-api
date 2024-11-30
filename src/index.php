@@ -22,10 +22,6 @@ $dbconn = new \mysqli("localhost", "root", "", "bankAPI");
 $dbconn->set_charset('utf8');
 
 // dołączamy ścieżki
-Route::add("/", function() { 
-    (new IndexPage())->page();
-});
-
 Route::add("/login", function() use($dbconn) { 
     (new LoginPage($dbconn))->page();
 }, "post");

@@ -5,30 +5,36 @@ namespace BankAPI;
 require_once("../lib/phprouter.php");
 use Steampixel\Route;
 
-require_once("../src/routes/models/account.php");
-require_once("../src/routes/models/user.php");
-require_once("../src/routes/models/token.php");
+// załączamy modele
+require_once("../src/models/account.php");
+require_once("../src/models/user.php");
+require_once("../src/models/token.php");
 
 // załączamy poszczegolne sciezki
 require_once("../src/routes/index.php");
 require_once("../src/routes/login.php");
 require_once("../src/routes/account/details.php");
+require_once("../src/routes/transfer/new.php");
 
 // polacz z baza danych i skonfiguruj polaczenie
 $dbconn = new \mysqli("localhost", "root", "", "bankAPI");
 $dbconn->set_charset('utf8');
 
 // dołączamy ścieżki
-const INDEX_ROUTE = new IndexPage();
-Route::add("/", function() { return INDEX_ROUTE->page(); });
+Route::add("/", function() { 
+    (new IndexPage())->page();
+});
 
-const LOGIN_ROUTE = new LoginPage($dbconn);
-Route::add("/login", function() { return INDEX_ROUTE->page(); }, "post");
+Route::add("/login", function() use($dbconn) { 
+    (new LoginPage($dbconn))->page();
+}, "post");
 
-const ACCOUNT_DETAILS_ROUTE = new AccountDetailsPage($dbconn);
-Route::add("/account/details", function() { return ACCOUNT_DETAILS_ROUTE->page(); }, "post");
+Route::add("/account/details", function() use($dbconn) {
+    (new AccountDetailsPage($dbconn))->page();
+}, "post");
 
-const TRANSFER_NEW_ROUTE = new TransferNewPage($dbconn);
-Route::add("/transfer/new", function() { return TRANSFER_NEW_ROUTE->page(); }, "post");
+Route::add("/transfer/new", function() use($dbconn) {
+    (new TransferNewPage($dbconn))->page();
+}, "post");
 
-Route::run("/bankAPI");
+Route::run("/bankapi");

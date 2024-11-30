@@ -1,4 +1,7 @@
 <?php
+
+namespace BankAPI;
+
 class IndexPage {
     public $ROUTE_PATH = "/";
 

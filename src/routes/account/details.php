@@ -2,13 +2,13 @@
 namespace BankAPI;
 
 // załączamy biblioteke mysql
-use msqli;
+use mysqli;
 
 class AccountDetailsPageResponse {
     private Account|null $account;
     private string|null $error;
 
-    public function __construct(Account $account, string $error) {
+    public function __construct(Account|null $account, string|null $error) {
         $this->account = $account;
         $this->error = $error;
     }

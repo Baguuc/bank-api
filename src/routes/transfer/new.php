@@ -7,7 +7,7 @@ use mysqli;
 class TransferNewPageResponse {
     private string|null $error;
 
-    public function __construct(string $error) {
+    public function __construct(string|null $error) {
         $this->error = $error;
     }
 

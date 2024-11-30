@@ -2,8 +2,10 @@
 
 namespace BankAPI;
 
+use mysqli;
+
 class Transfer {
-    public static function new(\mysqli $dbconn, int $sourceAccountNo, int $targetAccountNo, int $amount) {
+    public static function new(mysqli $dbconn, int $sourceAccountNo, int $targetAccountNo, int $amount) {
         //rozpocznij transakcje
         $dbconn->begin_transaction();
 

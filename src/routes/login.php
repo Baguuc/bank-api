@@ -2,7 +2,7 @@
 namespace BankAPI;
 
 // załączamy biblioteke mysql
-use msqli;
+use mysqli;
 
 class LoginPageResponse {
     private string|null $token;
@@ -41,7 +41,7 @@ class LoginPage {
         try {
             // Zmienna "login" w tym przypadku oznacza email uzytkownika
             $user = User::select($this->dbconn, $data['login']);
-        } catch(Exception $_) {
+        } catch(\Exception $_) {
             $response = new LoginPageResponse(null, "This user does not exist.");
             $response->send();
 

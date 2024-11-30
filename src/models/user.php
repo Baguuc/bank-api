@@ -2,7 +2,7 @@
 namespace BankAPI;
 
 // załączamy biblioteke mysql
-use msqli;
+use mysqli;
 
 class User {
     private int $id;

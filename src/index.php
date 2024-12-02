@@ -15,6 +15,7 @@ require_once("../src/models/transfer.php");
 require_once("../src/routes/index.php");
 require_once("../src/routes/login.php");
 require_once("../src/routes/account/details.php");
+require_once("../src/routes/account/transfers.php");
 require_once("../src/routes/transfer/new.php");
 
 // polacz z baza danych i skonfiguruj polaczenie
@@ -28,6 +29,10 @@ Route::add("/login", function() use($dbconn) {
 
 Route::add("/account/details", function() use($dbconn) {
     (new AccountDetailsPage($dbconn))->page();
+}, "post");
+
+Route::add("/account/transfers", function() use($dbconn) {
+    (new AccountTransfersPage($dbconn))->page();
 }, "post");
 
 Route::add("/transfer/new", function() use($dbconn) {
